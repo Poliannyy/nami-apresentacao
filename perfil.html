@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil - Nami (Mock)</title>
+
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #eff3fd; color: #1b3b3b; }
+
+    header {
+      background: #b4c4f1;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-back {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+
+    .profile {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .avatar-circle {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #f0f4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      border: 3px solid #7e91c5;
+    }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 { margin-top: 0; color: #4e68b1; }
+
+    .ranking-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      margin: 6px 0;
+      border-radius: 8px;
+      background: #f1fbfb;
+    }
+
+    .top1 { background: gold; font-weight: bold; }
+    .voce { background: #b5c0df; color: white; }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <button class="btn-back" onclick="history.back()">← Voltar</button>
+  <h2>Nami - Perfil (Mock)</h2>
+</header>
+
+<div class="container">
+
+  <h2 id="welcomeMsg"></h2>
+
+  <!-- PERFIL -->
+  <div class="profile">
+    <div class="avatar-circle" id="avatar">🧑</div>
+
+    <div>
+      <p><strong>E-mail:</strong> poly@nami.com</p>
+      <p><strong>Família:</strong> Família Silva</p>
+      <p><strong>Pontos:</strong> <span id="points">0</span> XP</p>
+      <p><strong>Cargo:</strong> Administrador</p>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- RANKING -->
+    <div class="card">
+      <h2>🏆 Ranking Familiar</h2>
+      <div id="ranking">Carregando...</div>
+    </div>
+
+    <!-- CONQUISTAS -->
+    <div class="card">
+      <h2>🏅 Conquistas</h2>
+      <p>Economize água para desbloquear medalhas!</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Mock Data
+  const user = { name: "Poly", points: 1250 };
+  const fakeRanking = [
+    { name: 'Poly', points: 1250 },
+    { name: 'Ana', points: 980 },
+    { name: 'Lucas', points: 870 },
+    { name: 'Carlos', points: 720 }
+  ];
+
+  document.getElementById('welcomeMsg').innerText = `Bem-vindo, ${user.name}!`;
+  document.getElementById('points').innerText = user.points;
+  
+  function logout() { localStorage.clear(); window.location.href = "login.html"; }
+
+  function renderRanking() {
+    const rankingDiv = document.getElementById('ranking');
+    rankingDiv.innerHTML = fakeRanking.map((u, i) => {
+      let cls = "ranking-item";
+      if (u.name === user.name) cls += " voce";
+      if (i === 0) cls += " top1";
+      return `
+        <div class="${cls}">
+          <span>${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + (i + 1)} ${u.name}</span>
+          <span>${u.points} XP</span>
+        </div>
+      `;
+    }).join('');
+  }
+  renderRanking();
+</script>
+
+</body>
+</html>

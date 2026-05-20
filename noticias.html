@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Notícias - Nami</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f7faff; color: #2c3847; }
+    header { background: linear-gradient(135deg,#DCE8F8,#b4c4f1); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #97c0f1; text-align: center; font-size: larger; margin: 0; }
+    .nav a { color: white; text-decoration: underline; margin: 0 10px; font-weight: bold; }
+    .btn-back { background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold; }
+    .btn-back:hover { background: rgba(255,255,255,0.35); }
+    .container { max-width: 1100px; margin: 20px auto; padding: 20px; }
+
+    /* Hero notícia */
+    .news-highlight { background: linear-gradient(135deg,#80a7db,#b4c4f1); color: white; padding: 30px; border-radius: 14px; margin-bottom: 24px; }
+    .badge { display: inline-block; background: rgba(220,233,241,0.9); color: rgb(69,83,207); padding: 5px 12px; border-radius: 6px; font-weight: bold; margin-bottom: 12px; font-size: 13px; }
+    .news-highlight h2 { margin: 0 0 10px; font-size: 22px; }
+    .news-highlight p { margin: 0 0 16px; opacity: 0.95; line-height: 1.6; }
+    .img-box { width: 100%; height: 220px; background: rgba(255,255,255,0.15); border: 2px dashed rgba(255,255,255,0.4); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.8); font-weight: bold; }
+
+    /* Grid de cards */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card { background: linear-gradient(135deg,#DCE8F8,#b4c4f1); padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .card h3 { margin-top: 0; color: #3a55a0; }
+    .card p { color: #444; font-size: 14px; line-height: 1.5; }
+    .card-img { width: 100%; height: 140px; background: rgba(255,255,255,0.5); border: 2px dashed #6496d6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #659ae0; font-weight: bold; margin-bottom: 14px; font-size: 13px; }
+
+    /* Seção dicas rápidas */
+    .tips-section { margin-top: 30px; }
+    .tips-section h2 { color: #4e68b1; margin-bottom: 16px; }
+    .tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .tip-card { background: white; padding: 16px; border-radius: 10px; border-left: 4px solid #4e68b1; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+    .tip-card h4 { margin: 0 0 8px; color: #4e68b1; }
+    .tip-card p { margin: 0; font-size: 13px; color: #555; line-height: 1.5; }
+
+    footer { margin-top: 60px; padding: 20px; text-align: center; background: #b4c4f1; color: white; }
+  </style>
+    <script>
+        function logout() { localStorage.clear(); window.location.href = "login.html"; }
+    </script>
+</head>
+<body>
+
+<header>
+  <button class="btn-back" onclick="window.history.back()">← Voltar</button>
+  <div><h1>Nami</h1></div>
+  <nav class="nav">
+    <a href="painel-principal.html">Desempenho</a>
+    <a href="timer.html">Timer</a>
+    <a href="noticias.html">Notícias</a>
+    <a href="perfil.html">Perfil</a>
+    <a href="#" onclick="logout()" style="color:white;text-decoration:underline;">Sair</a>
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- DESTAQUE PRINCIPAL -->
+  <div class="news-highlight">
+    <div class="badge">OFICIAL</div>
+    <h2>🏛️ Governo valida e oficializa o Projeto Nami</h2>
+    <p>O governo reconheceu oficialmente o Projeto Nami como uma plataforma de apoio à redução do consumo de água em residências e empresas. O sistema passa a ser utilizado como referência em programas de sustentabilidade.</p>
+    <div class="img-box">📸 Imagem: Governo oficializa Nami</div>
+  </div>
+
+  <!-- CARDS DE NOTÍCIAS -->
+  <div class="grid">
+    <div class="card">
+      <div class="card-img">💧 Novo Sistema</div>
+      <h3>Novo Sistema de Economia</h3>
+      <p>Descubra novas formas de reduzir o consumo de água em sua casa utilizando metas inteligentes.</p>
+    </div>
+    <div class="card">
+      <div class="card-img">🌱 Dicas Sustentáveis</div>
+      <h3>Dicas Sustentáveis</h3>
+      <p>Pequenas mudanças no dia a dia podem gerar grandes impactos no meio ambiente.</p>
+    </div>
+    <div class="card">
+      <div class="card-img">🎯 Metas</div>
+      <h3>Metas da Semana</h3>
+      <p>Crie desafios pessoais para diminuir o desperdício e acompanhar sua evolução.</p>
+    </div>
+    <div class="card">
+      <div class="card-img">🌊 Sustentabilidade</div>
+      <h3>Sustentabilidade no Banho</h3>
+      <p>Dicas preciosas para economizar sem perder o conforto.</p>
+    </div>
+    <div class="card">
+      <div class="card-img">🌍 Impacto</div>
+      <h3>O Impacto do Consumo</h3>
+      <p>Entenda como a redução do uso de água quente ajuda o planeta.</p>
+    </div>
+    <div class="card">
+      <div class="card-img">🏆 Desafios</div>
+      <h3>Desafios em Família</h3>
+      <p>Envolva toda a família para economizar juntos e acumular pontos Nami.</p>
+    </div>
+  </div>
+
+  <!-- DICAS RÁPIDAS -->
+  <div class="tips-section">
+    <h2>💡 Dicas Rápidas</h2>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h4>⏱️ Use o Timer</h4>
+        <p>Banhos curtos de até 5 minutos economizam até 60 litros por semana.</p>
+      </div>
+      <div class="tip-card">
+        <h4>🌡️ Água Morna</h4>
+        <p>Reduzir a temperatura do chuveiro em 2°C pode reduzir 15% do consumo de energia.</p>
+      </div>
+      <div class="tip-card">
+        <h4>📊 Acompanhe</h4>
+        <p>Monitorar seu consumo no painel ajuda a manter o foco nas metas semanais.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2026 Nami - Economia Inteligente de Água</footer>
+
+</body>
+</html>

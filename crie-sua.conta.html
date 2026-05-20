@@ -1,0 +1,108 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nami - Crie sua conta</title>
+    <style>
+        :root { --primary-color: #4e68b1; --secondary-color: #b4c4f1; --bg-color: #DCE8F8; --text-color: #333; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #DCE8F8 0%, #b4c4f1 100%); padding: 40px 20px; }
+        .container { width: 100%; max-width: 1000px; background: var(--white); border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); display: flex; overflow: hidden; min-height: 650px; }
+        .lado-esquerdo { flex: 0.8; background: var(--primary-color); padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
+        .logo-box { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 50%; margin-bottom: 25px; border: 2px dashed rgba(255,255,255,0.3); }
+        .logo { width: 100px; height: 100px; object-fit: contain; filter: brightness(0) invert(1); }
+        .titulo-nami { font-size: 38px; font-weight: 800; margin-bottom: 20px; }
+        .texto-nami { font-size: 15px; line-height: 1.6; opacity: 0.9; max-width: 250px; }
+        .lado-direito { flex: 1.2; padding: 50px; background: var(--white); overflow-y: auto; }
+        h1 { font-size: 32px; color: var(--text-color); margin-bottom: 8px; }
+        p.subtitle { color: #666; margin-bottom: 35px; font-size: 15px; }
+        form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .campo { display: flex; flex-direction: column; }
+        .full-width { grid-column: span 2; }
+        label { margin-bottom: 8px; color: #444; font-weight: 600; font-size: 14px; }
+        input { width: 100%; padding: 14px; border: 2px solid #f0f0f0; border-radius: 12px; outline: none; transition: all 0.3s; background: #fafafa; font-size: 15px; }
+        input:focus { border-color: var(--primary-color); background-color: var(--white); box-shadow: 0 0 0 4px rgba(78,104,177,0.1); }
+        .button-group { grid-column: span 2; margin-top: 15px; }
+        button[type="submit"] { width: 100%; padding: 16px; border: none; border-radius: 12px; background: var(--primary-color); color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        button[type="submit"]:hover { background: #3d5494; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(61,84,148,0.3); }
+        .mensagem { grid-column: span 2; text-align: center; margin-top: 15px; font-weight: 600; min-height: 24px; }
+        @media (max-width: 900px) { form { grid-template-columns: 1fr; } .full-width, .button-group, .mensagem { grid-column: span 1; } }
+        @media (max-width: 768px) { .container { flex-direction: column; } .lado-esquerdo { padding: 40px 20px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lado-esquerdo">
+            <div class="logo-box"><img src="5336402.png" class="logo" alt="Nami Logo"></div>
+            <h1 class="titulo-nami">𝙉𝙖𝙢𝙞</h1>
+            <p class="texto-nami">Ao criar uma conta, você transforma cada gota economizada em benefícios reais.</p>
+        </div>
+        <div class="lado-direito">
+            <h1>Crie sua conta</h1>
+            <p class="subtitle">Junte-se à Nami e comece sua jornada sustentável hoje.</p>
+            <form id="formCadastro">
+                <div class="campo full-width">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" placeholder="Seu nome completo" required>
+                </div>
+                <div class="campo">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="email@exemplo.com" required>
+                </div>
+                <div class="campo">
+                    <label for="familyName">Nome da Família</label>
+                    <input type="text" id="familyName" placeholder="Ex: Família Silva" required>
+                </div>
+                <div class="campo">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="Mínimo 6 caracteres" required>
+                </div>
+                <div class="campo">
+                    <label for="confirmarSenha">Confirmar Senha</label>
+                    <input type="password" id="confirmarSenha" placeholder="Repita sua senha" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" id="btnCadastrar">Criar minha conta</button>
+                    <div style="text-align:center;margin-top:15px;">
+                        <a href="login.html" style="color:var(--primary-color);text-decoration:none;font-weight:600;font-size:14px;">Já possui uma conta? Entre aqui</a>
+                    </div>
+                </div>
+                <div class="mensagem" id="mensagem"></div>
+            </form>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('formCadastro');
+        const mensagem = document.getElementById('mensagem');
+        const btnCadastrar = document.getElementById('btnCadastrar');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            mensagem.innerHTML = 'Criando sua conta...';
+            mensagem.style.color = 'var(--primary-color)';
+            btnCadastrar.disabled = true;
+            btnCadastrar.style.opacity = '0.7';
+
+            const password = document.getElementById('senha').value;
+            const confirmarSenha = document.getElementById('confirmarSenha').value;
+
+            if (password !== confirmarSenha) {
+                mensagem.innerHTML = '❌ As senhas não coincidem!';
+                mensagem.style.color = 'red';
+                btnCadastrar.disabled = false;
+                btnCadastrar.style.opacity = '1';
+                return;
+            }
+
+            // Simulação de registro bem-sucedido
+            setTimeout(() => {
+                mensagem.innerHTML = '✅ Conta criada com sucesso!';
+                mensagem.style.color = 'green';
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1000);
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

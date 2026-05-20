@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Timer de Banho - Nami</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f7faff; color: #2c3847; }
+    header { background: linear-gradient(135deg,#DCE8F8,#b4c4f1); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #97c0f1; text-align: center; font-size: larger; margin: 0; }
+    .nav a { color: white; text-decoration: underline; margin: 0 10px; font-weight: bold; }
+    .btn-back { background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold; }
+    .btn-back:hover { background: rgba(255,255,255,0.35); }
+    .container { max-width: 800px; margin: 50px auto; padding: 20px; }
+    .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+    #timerDisplay { font-size: 80px; font-weight: bold; color: #4e68b1; margin: 30px 0; font-family: monospace; }
+    .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    button { padding: 15px 40px; font-size: 18px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; transition: 0.3s; }
+    #btnStart { background: #28a745; color: white; }
+    #btnStop { background: #dc3545; color: white; display: none; }
+    #btnCancel { background: #888; color: white; display: none; }
+    #timerMsg { margin-top: 30px; font-size: 16px; line-height: 1.5; }
+    footer { position: fixed; bottom: 0; width: 100%; padding: 20px; text-align: center; background: #b4c4f1; color: white; }
+  </style>
+</head>
+<body>
+
+<header>
+  <button class="btn-back" onclick="window.history.back()">← Voltar</button>
+  <div><h1>Nami</h1></div>
+  <nav class="nav">
+    <span id="userName" style="margin-right:20px;font-weight:bold;color:#4e68b1;"></span>
+    <a href="painel-principal.html">Desempenho</a>
+    <a href="timer.html">Timer</a>
+    <a href="noticias.html">Notícias</a>
+    <a href="perfil.html">Perfil</a>
+    <a href="#" onclick="logout()" style="color:#ff4d4d;">Sair</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2 style="color:#4e68b1;">🚿 Iniciar Sessão de Banho</h2>
+    <p>O cronômetro ajudará você a manter o foco na sua meta de economia.</p>
+    <div id="timerDisplay">00:00</div>
+    <div class="btn-group">
+      <button id="btnStart" onclick="startBath()">Iniciar Banho</button>
+      <button id="btnStop" onclick="stopBath()">Finalizar Banho</button>
+      <button id="btnCancel" onclick="cancelBath()">Cancelar</button>
+    </div>
+    <div id="timerMsg"></div>
+  </div>
+</div>
+
+<footer>© 2026 Nami - Economia Inteligente de Água</footer>
+
+<script>
+  let timerInterval = null;
+  let startTimestamp = null;
+  document.getElementById('userName').innerText = `Olá, Usuário!`;
+
+  function logout() { localStorage.clear(); window.location.href = "login.html"; }
+
+  function startBath() {
+    document.getElementById('timerMsg').innerText = '';
+    startTimerUI(new Date());
+    document.getElementById('timerMsg').innerHTML = '<span style="color:green;">✅ Banho iniciado! Relaxe e economize.</span>';
+  }
+
+  function stopBath() {
+    if (!confirm('Deseja finalizar o banho agora?')) return;
+    clearInterval(timerInterval);
+    const endTime = new Date();
+    const durSec = Math.floor((endTime - startTimestamp) / 1000);
+    const min = Math.floor(durSec / 60);
+    const sec = durSec % 60;
+
+    document.getElementById('btnStart').style.display = 'block';
+    document.getElementById('btnStop').style.display = 'none';
+    document.getElementById('btnCancel').style.display = 'none';
+    document.getElementById('timerDisplay').innerText = '00:00';
+
+    document.getElementById('timerMsg').innerHTML = `
+      <div style="background:#e6ffed;padding:15px;border-radius:10px;border-left:5px solid #28a745;">
+        <strong>Banho finalizado!</strong><br>
+        ⏱️ Duração: ${min}min ${sec}s &nbsp;|&nbsp; 💧 Consumo estimado: ${Math.round(min * 2.5)}L
+      </div>`;
+    startTimestamp = null;
+  }
+
+  function cancelBath() {
+    if (!confirm('Cancelar o banho sem salvar?')) return;
+    clearInterval(timerInterval);
+    startTimestamp = null;
+    document.getElementById('timerDisplay').innerText = '00:00';
+    document.getElementById('btnStart').style.display = 'block';
+    document.getElementById('btnStop').style.display = 'none';
+    document.getElementById('btnCancel').style.display = 'none';
+    document.getElementById('timerMsg').innerHTML = '<span style="color:#888;">Banho cancelado.</span>';
+  }
+
+  function startTimerUI(start) {
+    startTimestamp = start;
+    document.getElementById('btnStart').style.display = 'none';
+    document.getElementById('btnStop').style.display = 'block';
+    document.getElementById('btnCancel').style.display = 'block';
+
+    timerInterval = setInterval(() => {
+      const diff = Math.floor((new Date() - startTimestamp) / 1000);
+      const m = Math.floor(diff / 60).toString().padStart(2, '0');
+      const s = (diff % 60).toString().padStart(2, '0');
+      document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+    }, 1000);
+  }
+</script>
+</body>
+</html>

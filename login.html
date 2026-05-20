@@ -1,0 +1,267 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nami - Entre na sua conta</title>
+    <style>
+        :root {
+            --primary-color: #4e68b1;
+            --secondary-color: #b4c4f1;
+            --bg-color: #DCE8F8;
+            --text-color: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            background: linear-gradient(135deg, #DCE8F8 0%, #b4c4f1 100%);
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: flex;
+            overflow: hidden;
+            min-height: 550px;
+        }
+
+        .lado-esquerdo {
+            flex: 1;
+            background: var(--primary-color);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .logo-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .titulo-nami {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .texto-nami {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.9;
+            max-width: 280px;
+        }
+
+        .lado-direito {
+            flex: 1.2;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .campo {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            background-color: #f9faff;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary-color);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background: #3d5494;
+            transform: translateY(-2px);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .btn-link {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+            display: block;
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .mensagem {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                max-width: 450px;
+            }
+            .lado-esquerdo {
+                padding: 30px;
+            }
+            .lado-direito {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="lado-esquerdo">
+            <div class="logo-box">
+                <img src="5336402.png" class="logo" alt="Nami Logo">
+            </div>
+            <h1 class="titulo-nami">𝙉𝙖𝙢𝙞</h1>
+            <p class="texto-nami">
+                Transforme seu consumo em consciência e sua economia em benefícios reais.
+            </p>
+        </div>
+
+        <div class="lado-direito">
+            <h1>Conecte-se</h1>
+            <p class="subtitle">Bem-vindo de volta! Por favor, insira seus dados.</p>
+
+            <form id="formLogin">
+                <div class="campo">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="nome@exemplo.com" required>
+                </div>
+
+                <div class="campo">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" id="btnContinuar">Entrar na conta</button>
+                
+                <a href="#" class="btn-link" onclick="irParaCadastro()">Não tem uma conta? Cadastre-se</a>
+                <a href="#" class="btn-link" onclick="esqueciSenha()" style="font-weight: normal; font-size: 13px; color: #888;">Esqueci minha senha</a>
+
+                <div class="mensagem" id="mensagem"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('formLogin');
+        const mensagem = document.getElementById('mensagem');
+        const btnContinuar = document.getElementById('btnContinuar');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            mensagem.innerHTML = 'Entrando...';
+            mensagem.style.color = 'var(--primary-color)';
+            btnContinuar.disabled = true;
+            btnContinuar.style.opacity = '0.7';
+
+            // Simulação de login bem-sucedido
+            setTimeout(() => {
+                mensagem.innerHTML = '✅ Login realizado com sucesso!';
+                mensagem.style.color = 'green';
+                
+                // Redirecionamento após simulação
+                setTimeout(() => {
+                    window.location.href = "painel-principal.html";
+                }, 800);
+            }, 1000);
+        });
+
+        function irParaCadastro() {
+            window.location.href = "crie-sua.conta.html";
+        }
+
+        function esqueciSenha() {
+            alert('A recuperação de senha estará disponível em breve.');
+        }
+    </script>
+
+</body>
+</html>

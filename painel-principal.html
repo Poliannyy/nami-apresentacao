@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Desempenho - Nami</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f7faff; color: #2c3847; }
+    header { background: linear-gradient(135deg,#DCE8F8,#b4c4f1); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #97c0f1; text-align: center; font-size: larger; margin: 0; }
+    .nav a { color: white; text-decoration: underline; margin: 0 10px; font-weight: bold; }
+    .container { max-width: 1100px; margin: 20px auto; padding: 20px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .full-width { grid-column: span 2; }
+    .stats-header { display: flex; justify-content: space-around; text-align: center; margin-bottom: 10px; }
+    .stat-item { background: #f0f4ff; padding: 15px; border-radius: 10px; flex: 1; margin: 0 8px; }
+    .stat-value { font-size: 24px; font-weight: bold; color: #4e68b1; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+    th { background: #f0f4ff; color: #4e68b1; padding: 10px; text-align: left; }
+    td { padding: 10px; border-bottom: 1px solid #eee; }
+    .badge { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    .badge-otimo { background: #d4edda; color: #155724; }
+    .badge-recomendado { background: #d1ecf1; color: #0c5460; }
+    .badge-aceitavel { background: #fff3cd; color: #856404; }
+    .badge-acima { background: #ffe5cc; color: #7a3e00; }
+    .badge-excessivo { background: #f8d7da; color: #721c24; }
+    .progress-bar-bg { background: #eee; border-radius: 10px; height: 10px; margin-top: 6px; }
+    .progress-bar { background: #4e68b1; height: 10px; border-radius: 10px; transition: width 0.5s; }
+    .challenge-item { padding: 12px; border-left: 4px solid #4e68b1; margin-bottom: 12px; background: #f9faff; border-radius: 6px; }
+    footer { margin-top: 60px; padding: 20px; text-align: center; background: #b4c4f1; color: white; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div><h1>Nami</h1></div>
+  <nav class="nav">
+    <span id="userName" style="margin-right:20px;font-weight:bold;color:#4e68b1;"></span>
+    <a href="painel-principal.html">Desempenho</a>
+    <a href="timer.html">Timer</a>
+    <a href="noticias.html">Notícias</a>
+    <a href="perfil.html">Perfil</a>
+    <a href="#" onclick="logout()" style="color:#ff4d4d;">Sair</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="grid">
+
+    <!-- RESUMO DO MÊS -->
+    <div class="card full-width">
+      <h2>Seu Desempenho no Mês</h2>
+      <div class="stats-header">
+        <div class="stat-item"><div>Total de Banhos</div><div class="stat-value" id="totalBaths">—</div></div>
+        <div class="stat-item"><div>Consumo Total</div><div class="stat-value" id="totalLiters">— L</div></div>
+        <div class="stat-item"><div>Pontos XP</div><div class="stat-value" id="totalPoints">— XP</div></div>
+        <div class="stat-item"><div>Taxa de Coerência</div><div class="stat-value" id="coherenceRate">—%</div></div>
+      </div>
+    </div>
+
+    <!-- GRÁFICO SEMANAL -->
+    <div class="card">
+      <h2>Consumo Semanal (Litros)</h2>
+      <canvas id="graficoConsumo"></canvas>
+    </div>
+
+    <!-- COERÊNCIA -->
+    <div class="card">
+      <h2>Taxa de Coerência</h2>
+      <div style="text-align:center;margin-top:20px;">
+        <div style="font-size:48px;font-weight:bold;color:#28a745;" id="coherenceBig">—%</div>
+        <p>dos seus banhos estão dentro do tempo estimado.</p>
+      </div>
+    </div>
+
+    <!-- HISTÓRICO DE BANHOS -->
+    <div class="card full-width">
+      <h2>📋 Histórico de Banhos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Duração (min)</th>
+            <th>Litros</th>
+            <th>Custo (R$)</th>
+            <th>Nível de Saúde</th>
+            <th>Coerente?</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"><tr><td colspan="6" style="text-align:center;color:#aaa;">Carregando...</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- DESAFIOS ATIVOS -->
+    <div class="card full-width">
+      <h2>🎯 Desafios Ativos</h2>
+      <div id="challengesList"><p style="color:#aaa;">Carregando desafios...</p></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>© 2026 Nami - Economia Inteligente de Água</footer>
+
+<script>
+  // Mock Data
+  const mockDashboard = {
+    monthStats: { totalBaths: 43, totalLiters: 1250 },
+    coherence: { rate: 78 },
+    points: 1200
+  };
+
+  const mockBaths = [
+    { date: '2026-05-20', duration: 300, liters_consumed: 45, cost: 1.2, health_level: 'ótimo', is_coherent: true },
+    { date: '2026-05-19', duration: 420, liters_consumed: 60, cost: 1.5, health_level: 'recomendado', is_coherent: true },
+    { date: '2026-05-18', duration: 600, liters_consumed: 90, cost: 2.1, health_level: 'aceitável', is_coherent: false }
+  ];
+
+  const mockChallenges = [
+    { challenge: { title: 'Economizador Ávido', description: 'Economize 500L de água' }, progress: 350, end_date: '2026-05-30' },
+    { challenge: { title: 'Banho de 5 Minutos', description: 'Mantenha o tempo abaixo de 300s' }, progress: 10, end_date: '2026-06-01' }
+  ];
+
+  // DOM elements
+  document.getElementById('userName').innerText = `Olá, Usuário!`;
+  
+  function logout() { localStorage.clear(); window.location.href = "login.html"; }
+
+  // Carregar dados mockados
+  function carregarDados() {
+    // Stats
+    document.getElementById('totalBaths').innerText = mockDashboard.monthStats.totalBaths;
+    document.getElementById('totalLiters').innerText = mockDashboard.monthStats.totalLiters + ' L';
+    document.getElementById('totalPoints').innerText = mockDashboard.points + ' XP';
+    document.getElementById('coherenceRate').innerText = mockDashboard.coherence.rate + '%';
+    document.getElementById('coherenceBig').innerText = mockDashboard.coherence.rate + '%';
+    document.getElementById('coherenceBig').style.color = mockDashboard.coherence.rate >= 70 ? '#28a745' : '#dc3545';
+
+    // Histórico
+    const tbody = document.getElementById('historyBody');
+    const badgeMap = {
+      'ótimo': 'badge-otimo', 'recomendado': 'badge-recomendado',
+      'aceitável': 'badge-aceitavel', 'acima do recomendado': 'badge-acima', 'excessivo': 'badge-excessivo'
+    };
+    tbody.innerHTML = mockBaths.map(b => `
+      <tr>
+        <td>${new Date(b.date).toLocaleDateString('pt-BR')}</td>
+        <td>${Math.round(b.duration / 60)} min</td>
+        <td>${b.liters_consumed} L</td>
+        <td>R$ ${parseFloat(b.cost).toFixed(2)}</td>
+        <td><span class="badge ${badgeMap[b.health_level] || ''}">${b.health_level}</span></td>
+        <td>${b.is_coherent ? '✅' : '❌'}</td>
+      </tr>`).join('');
+
+    // Desafios
+    const div = document.getElementById('challengesList');
+    div.innerHTML = mockChallenges.map(c => {
+      const pct = Math.min(100, Math.round((c.progress / 500) * 100)) || 0;
+      return `<div class="challenge-item">
+        <strong>${c.challenge.title}</strong>
+        <p style="margin:4px 0;font-size:13px;">${c.challenge.description}</p>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;">
+          <span>Progresso: ${pct}%</span>
+          <span>Até ${new Date(c.end_date).toLocaleDateString('pt-BR')}</span>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:${pct}%"></div></div>
+      </div>`;
+    }).join('');
+
+    // Gráfico
+    new Chart(document.getElementById('graficoConsumo'), {
+      type: 'bar',
+      data: { 
+        labels: ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'], 
+        datasets: [{ label: 'Litros', data: [45, 60, 90, 40, 50, 80, 55], backgroundColor: '#b4c4f1' }] 
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+  }
+
+  carregarDados();
+</script>
+</body>
+</html>
